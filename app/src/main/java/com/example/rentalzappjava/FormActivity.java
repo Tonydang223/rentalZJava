@@ -49,9 +49,67 @@ public class FormActivity extends AppCompatActivity {
         create.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if(!validateBedRoom() | !validateDateTime() |!validateName() |!validatePrice() | !validateProperty()) {
+                    Toast.makeText(FormActivity.this,"Create Fail!!!",Toast.LENGTH_LONG).show();
+                }
+                else {
+                    Toast.makeText(FormActivity.this,"Created Successfully!!!",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }
+    private Boolean validateProperty(){
+        String propertyInput = property.getEditableText().toString().trim();
+        if(propertyInput.isEmpty()){
+            property.setError("The property must not empty");
+            return false;
+        }else{
+            property.setError(null);
+            return true;
+        }
+    };
+    private Boolean validateBedRoom(){
+        String bedRoomInput = bedRoomCompleteTextView.getText().toString();
+        if(bedRoomInput.length() == 0){
+            bedRoomCompleteTextView.setError("Bed Room must not empty");
+            return false;
+        }
+        else{
+            bedRoomCompleteTextView.setError(null);
+            return true;
+        }
+    };
+    private Boolean validateDateTime(){
+        String dateTimeInput = dateTime.getEditableText().toString().trim();
+        if(dateTimeInput.isEmpty()){
+            dateTime.setError("Date and Time must not empty");
+            return false;
+        }
+        else{
+            dateTime.setError(null);
+            return true;
+        }
+    };
+    private Boolean validateName(){
+        String nameInput = name.getEditableText().toString().trim();
+        if(nameInput.isEmpty()){
+            name.setError("Date and Time must not empty");
+            return false;
+        }else{
+            name.setError(null);
+            return true;
+        }
+    };
+    private Boolean validatePrice(){
+        String nameInput = price.getEditableText().toString();
+        if(nameInput.isEmpty()){
+            price.setError("Price must not empty");
+            return false;
+        }else{
+            price.setError(null);
+            return true;
+        }
+    };
 
 
 
