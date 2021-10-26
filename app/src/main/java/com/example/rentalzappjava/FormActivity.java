@@ -30,7 +30,7 @@ public class FormActivity extends AppCompatActivity {
     Button create;
     private EditText property,dateTime,price,name,note;
     String regexLetter = "^[a-zA-Z\\s]*$";
-
+    String regexPrice = "^[1-9][0-9\\.]*$";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,6 +67,12 @@ public class FormActivity extends AppCompatActivity {
                 }
             }
         });
+        dateTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showDialogDateTime(dateTime);
+            }
+        });
         bedRoomCompleteTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
@@ -80,7 +86,7 @@ public class FormActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if(v.getId() == R.id.btnCreate){
                     if (!validateDateTime() | !validatePrice() | !validateName() | !validatebedRoom() | !validateProper()) {
-                        Toast.makeText(FormActivity.this,"fail!!!",Toast.LENGTH_LONG).show();
+                        Toast.makeText(FormActivity.this,"Created Fail!!!",Toast.LENGTH_LONG).show();
                     } else {
                         AlertDialog.Builder builder = new AlertDialog.Builder(FormActivity.this,R.style.Theme_AppCompat_Dialog_Alert);
                         View customeLayout = getLayoutInflater().inflate(R.layout.layout_dialog,null);
@@ -106,7 +112,7 @@ public class FormActivity extends AppCompatActivity {
                         builder.setPositiveButton("Confirm", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
-                                Toast.makeText(FormActivity.this,"Ok!!!",Toast.LENGTH_LONG).show();
+                                Toast.makeText(FormActivity.this,"Created Successfully!!!",Toast.LENGTH_LONG).show();
                                 property.getText().clear();
                                 bedRoomCompleteTextView.getText().clear();
                                 dateTime.getText().clear();
@@ -143,7 +149,7 @@ public class FormActivity extends AppCompatActivity {
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         calendar.set(Calendar.HOUR_OF_DAY,hourOfDay);
                         calendar.set(Calendar.MINUTE,minute);
-                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yy-MM-dd HH:mm");
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
                         dateTime.setText(simpleDateFormat.format(calendar.getTime()));
                     }
                 };
@@ -194,6 +200,10 @@ public class FormActivity extends AppCompatActivity {
         String priceText = price.getEditableText().toString().trim();
         if(priceText.isEmpty()){
             price.setError("Please enter the price");
+            return false;
+        }
+        else if(!priceText.matches(regexPrice)){
+            price.setError("Please enter a number than 0");
             return false;
         }
         else{
